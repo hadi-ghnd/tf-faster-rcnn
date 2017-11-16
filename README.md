@@ -16,4 +16,4 @@ Detection results in VEDAI |  Precision-Recal curve of each class
 
 ![]( https://github.com/hadi-ghnd/tf-faster-rcnn/blob/master/data/imgs/figure_21.png )      |  ![]( https://github.com/hadi-ghnd/tf-faster-rcnn/blob/master/data/imgs/figure_34.png )
 :-------------------------:|:-------------------------:
-Detection results in NWPU
+Detection results in NWPU | Detection results in NWPU
