@@ -22,6 +22,11 @@ import uuid
 from .voc_eval import voc_eval
 from model.config import cfg
 
+import matplotlib.pyplot as plt
+import pylab as pl
+from sklearn.metrics import precision_recall_curve
+from itertools import cycle
+
 
 class pascal_voc(imdb):
   def __init__(self, image_set, year, devkit_path=None):
@@ -241,9 +246,22 @@ class pascal_voc(imdb):
         filename, annopath, imagesetfile, cls, cachedir, ovthresh=0.5,
         use_07_metric=use_07_metric)
       aps += [ap]
+      pl.plot(rec, prec, lw=2, 
+              label='Precision-recall curve of class {} (area = {:.4f})'
+                    ''.format(cls, ap))
       print(('AP for {} = {:.4f}'.format(cls, ap)))
       with open(os.path.join(output_dir, cls + '_pr.pkl'), 'wb') as f:
         pickle.dump({'rec': rec, 'prec': prec, 'ap': ap}, f)
+
+    pl.xlabel('Recall')
+    pl.ylabel('Precision')
+    plt.grid(True)
+    pl.ylim([0.0, 1.05])
+    pl.xlim([0.0, 1.0])
+    pl.title('Precision-Recall')
+    pl.legend(loc="upper right")     
+    plt.show()
+
     print(('Mean AP = {:.4f}'.format(np.mean(aps))))
     print('~~~~~~~~')
     print('Results:')
