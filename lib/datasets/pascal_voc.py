@@ -24,23 +24,19 @@ from model.config import cfg
 
 
 class pascal_voc(imdb):
-  def __init__(self, image_set, year, use_diff=False):
-    name = 'voc_' + year + '_' + image_set
-    if use_diff:
-      name += '_diff'
-    imdb.__init__(self, name)
+  def __init__(self, image_set, year, devkit_path=None):
+    imdb.__init__(self, 'voc_' + year + '_' + image_set)
     self._year = year
     self._image_set = image_set
-    self._devkit_path = self._get_default_path()
+    self._devkit_path = self._get_default_path() if devkit_path is None \
+      else devkit_path
     self._data_path = os.path.join(self._devkit_path, 'VOC' + self._year)
     self._classes = ('__background__',  # always index 0
-                     'aeroplane', 'bicycle', 'bird', 'boat',
-                     'bottle', 'bus', 'car', 'cat', 'chair',
-                     'cow', 'diningtable', 'dog', 'horse',
-                     'motorbike', 'person', 'pottedplant',
-                     'sheep', 'sofa', 'train', 'tvmonitor')
+                     'car', 'pickup', 'tractor', 'boat',
+                     'truck', 'campingcar', 'van', 'other', 'plane')
+
     self._class_to_ind = dict(list(zip(self.classes, list(range(self.num_classes)))))
-    self._image_ext = '.jpg'
+    self._image_ext = '.png'
     self._image_index = self._load_image_set_index()
     # Default to roidb handler
     self._roidb_handler = self.gt_roidb
@@ -50,7 +46,7 @@ class pascal_voc(imdb):
     # PASCAL specific config options
     self.config = {'cleanup': True,
                    'use_salt': True,
-                   'use_diff': use_diff,
+                   'use_diff': False,
                    'matlab_eval': False,
                    'rpn_file': None}
 
@@ -166,10 +162,10 @@ class pascal_voc(imdb):
     for ix, obj in enumerate(objs):
       bbox = obj.find('bndbox')
       # Make pixel indexes 0-based
-      x1 = float(bbox.find('xmin').text) - 1
-      y1 = float(bbox.find('ymin').text) - 1
-      x2 = float(bbox.find('xmax').text) - 1
-      y2 = float(bbox.find('ymax').text) - 1
+      x1 = float(bbox.find('xmin').text)
+      y1 = float(bbox.find('ymin').text) 
+      x2 = float(bbox.find('xmax').text) 
+      y2 = float(bbox.find('ymax').text) 
       cls = self._class_to_ind[obj.find('name').text.lower().strip()]
       boxes[ix, :] = [x1, y1, x2, y2]
       gt_classes[ix] = cls
@@ -243,7 +239,7 @@ class pascal_voc(imdb):
       filename = self._get_voc_results_file_template().format(cls)
       rec, prec, ap = voc_eval(
         filename, annopath, imagesetfile, cls, cachedir, ovthresh=0.5,
-        use_07_metric=use_07_metric, use_diff=self.config['use_diff'])
+        use_07_metric=use_07_metric)
       aps += [ap]
       print(('AP for {} = {:.4f}'.format(cls, ap)))
       with open(os.path.join(output_dir, cls + '_pr.pkl'), 'wb') as f:
