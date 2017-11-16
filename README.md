@@ -1,3 +1,6 @@
+# Description
+This fork is to use the original tf-faster-rcnn for a task of multi-class vehicle detection in aerial images
+
 # tf-faster-rcnn
 A Tensorflow implementation of faster RCNN detection framework by Xinlei Chen (xinleic@cs.cmu.edu). This repository is based on the python Caffe implementation of faster RCNN available [here](https://github.com/rbgirshick/py-faster-rcnn).
 
