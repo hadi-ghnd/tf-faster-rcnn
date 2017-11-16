@@ -9,7 +9,7 @@ A Tensorflow implementation of faster RCNN detection framework by Xinlei Chen (x
 
 ### Here are some sample results of performing this model on two datasets:
 
-![](https://github.com/hadi-ghnd/tf-faster-rcnn/blob/master/data/imgs/figure.png)      |  ![](https://github.com/hadi-ghnd/tf-faster-rcnn/blob/master/data/imgs/figure_4.png)
+![](https://github.com/hadi-ghnd/tf-faster-rcnn/blob/master/data/imgs/figure_4.png)      |  ![](https://github.com/hadi-ghnd/tf-faster-rcnn/blob/master/data/imgs/figure_2.png)
 :-------------------------:|:-------------------------:
 Detection results in VEDAI |  Precision-Recal curve of each class
 
